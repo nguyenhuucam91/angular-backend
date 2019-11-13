@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use App\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class CreateUserSeeder extends Seeder
@@ -13,6 +14,7 @@ class CreateUserSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('users')->truncate();
         User::create(
             [
                 'name'=>'camnh',

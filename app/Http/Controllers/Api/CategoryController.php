@@ -15,8 +15,9 @@ class CategoryController extends Controller
         return response()->json(['data' => $categories]);
     }
 
-    public function store()
+    public function destroy(Category $category)
     {
-
+        $category->delete();
+        return response()->json(['status' => 'ok']);
     }
 }
