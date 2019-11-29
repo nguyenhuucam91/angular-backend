@@ -5,7 +5,7 @@ namespace App\Http\Requests\Category;
 use App\Http\Requests\BaseFormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateCategoryRequest extends BaseFormRequest
+class UpdateCategoryRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class CreateCategoryRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'name' => ['required', Rule::unique('categories', 'name')]
+            'name' => ['required', Rule::unique('categories', 'name')->ignore($this->id)]
         ];
     }
 }

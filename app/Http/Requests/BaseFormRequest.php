@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Requests;
 
@@ -13,7 +13,7 @@ class BaseFormRequest extends \Illuminate\Foundation\Http\FormRequest
         if ($this->expectsJson()) {
             $errors = (new ValidationException($validator))->errors();
             throw new HttpResponseException(
-                response()->json(['data' => $errors], 422)
+                response()->json(['errors' => $errors], 422)
             );
         }
 

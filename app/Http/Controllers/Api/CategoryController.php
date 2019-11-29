@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateCategoryRequest;
+use App\Http\Requests\Category\UpdateCategoryRequest;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class CategoryController extends Controller 
+class CategoryController extends Controller
 {
     /**
      * View categories list
@@ -26,7 +27,7 @@ class CategoryController extends Controller
     public function create()
     {
         $category = new Category();
-        return response()->json(['data' => $category, 'success' => true], Response::HTTP_OK);
+        return response()->json(['data' => $category->toArray(), 'success' => true], Response::HTTP_OK);
     }
     /**
      * Store new resource
@@ -34,13 +35,13 @@ class CategoryController extends Controller
     public function store(CreateCategoryRequest $request)
     {
         $category = Category::create($request->input());
-        return response()->json(['id' => $category->id, 'success' => true], Response::HTTP_OK);
+        return response()->json(['data' => $category, 'success' => true], Response::HTTP_OK);
     }
 
     /**
      * Edit category form
      */
-    public function edit(Category $category) 
+    public function edit(Category $category)
     {
         return response()->json(['data' => $category, 'success' => true], Response::HTTP_OK);
     }
@@ -51,15 +52,15 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         $category->delete();
-        return response()->json(['success' => true], Response::HTTP_OK);
+        return response()->json(['success' => true, 'data' => $category], Response::HTTP_OK);
     }
 
     /**
      * Update category
      */
-    public function update(Category $category, Request $request)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         $category->update($request->input());
-        return response()->json(['success' => true], Response::HTTP_OK);
+        return response()->json(['success' => true, 'data' => $category], Response::HTTP_OK);
     }
 }
