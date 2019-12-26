@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Category;
+use App\Models\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Category\CreateCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
@@ -17,7 +17,11 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->query('perpage');
-        $categories = Category::paginate($perPage);
+        if ($request->query('id')) {
+            $categories = Category::where('id', $request->query('id'))->paginate($perPage);
+        } else {
+            $categories = Category::paginate($perPage);
+        }
         return response()->json(['data' => $categories, 'success' => true], Response::HTTP_OK);
     }
 

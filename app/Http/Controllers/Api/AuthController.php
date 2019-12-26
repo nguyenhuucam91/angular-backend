@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Exception;
+use Tymon\JWTAuth\Exceptions\TokenBlacklistedException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login']]);
-    }
-
     /**
      * Get a JWT via given credentials.
      *
@@ -40,7 +34,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(['user' => auth()->user(), 'success' => true]);
+        return response()->json(['user' => auth()->user()]);
     }
 
     /**
@@ -62,8 +56,15 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        try {
+            $token = JWTAuth::getToken();
+            $newAccessToken = JWTAuth::refresh($token);
+            return $this->respondWithToken($newAccessToken);
+        } catch (TokenBlacklistedException $e) {
+            return response()->json(['message' => 'token_blacklisted'], 401);
+        }
     }
+
 
     /**
      * Get the token array structure.

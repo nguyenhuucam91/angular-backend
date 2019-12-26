@@ -2,9 +2,6 @@
 
 namespace App\Providers;
 
-use App\Events\MediaUploaded;
-use App\Listeners\ConvertMediaToMp4;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -20,10 +17,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-
-        MediaUploaded::class => [
-            ConvertMediaToMp4::class
-        ]
     ];
 
     /**
